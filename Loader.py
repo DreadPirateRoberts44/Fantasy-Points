@@ -108,7 +108,7 @@ def identifyRookies(df):
 def getPlayerData(filename):
     df = pd.read_excel(filename, engine="openpyxl", sheet_name='1999-2013 data')
     handleMissingData(df)
-    df.sort_values(by=["Player", "Year"], inplace=True) # sort so missing/new player information can be generated   
+    df.sort_values(by=["Hometown", "Player", "Year"], inplace=True) # sort so missing/new player information can be generated   
     dropUnusedColumns(df)
         
     return df
