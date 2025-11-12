@@ -25,7 +25,7 @@ X = df[["Age","Height (inches)", "Weight",
         "College", "College wins", "College losses", 
         "Draft Round", "Draft Year", 
         "40\xa0Yard", "Bench Press", "Vert Leap\xa0(in)", "Broad Jump\xa0(in)", "Shuttle", "3Cone",
-        "IsRookie", "PreviousScore", "PreviousPlayed", "PreviousStarts"]]
+        "PreviousSeasonsCount", "PreviousScore", "PreviousPlayed", "PreviousStarts"]]
 
 Y = df["FantPt"]
 

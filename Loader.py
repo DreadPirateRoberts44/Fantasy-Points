@@ -41,7 +41,7 @@ def handleMissingData(df):
 # so shouldn't be used as is for making predictions
 # TODO use previous years data per player to 
 def handlePostSeasonData(df):
-     df["IsRookie"] = 0
+     df["PreviousSeasonsCount"] = 0
      df["PreviousScore"] = 0
      df["PreviousPlayed"] = 0
      df["PreviousStarts"] = 0
@@ -96,13 +96,16 @@ def identifyRookies(df):
                df.at[index, "PreviousScore"]  = players[row["Player"]]["PreviousScore"] # currently just tracking one, could be more cumulative
                df.at[index, "PreviousPlayed"]  = players[row["Player"]]["PreviousPlayed"] # currently just tracking one, could be more cumulative
                df.at[index, "PreviousStarts"]  = players[row["Player"]]["PreviousStarts"] # currently just tracking one, could be more cumulative
+               df.at[index, "PreviousSeasonsCount"] = players[row["Player"]]["PreviousSeasonsCount"]
+               players[row["Player"]]["PreviousSeasonsCount"] += 1
           else:
                players[row["Player"]] = {}
-               df.at[index, "IsRookie"] = 1
+               players[row["Player"]]["PreviousSeasonsCount"] = 1
+
           players[row["Player"]]["PreviousScore"] = row["FantPt"]
           players[row["Player"]]["PreviousPlayed"] = row["G"]
           players[row["Player"]]["PreviousStarts"] = row["GS"]
-
+     print(df)
 
 
 def getPlayerData(filename):
