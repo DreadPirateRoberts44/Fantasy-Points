@@ -1,0 +1,9 @@
+The modified file was written from the original data. The changes made include 
+- adding the PreviousSeasonsCount, PreviousScore, PreviousPlayed, and PreviousStart columns
+- FantPos, College, and Home State converted to category numbers
+- 'G', 'GS', 'Cmp', 'Att', 'Yds', 'TD','Int','Att.1','Yds.1', 'Y/A', "TD.1", 'Rec', 'Yds.2', 'Y/R', 'TD.2' are all removed. This should be handled with better care
+- null values for bench, weight, vert, 40, broad, shuttle, 3cone, and draft round were replaced with the median per player
+- remaining null values for bench weight vert, 40, broad, shuttle, and 3 cone were replaced with the median per position
+- remaining null values were converted to 0
+- a column is added for the original index of the data
+- the data is sorted by hometown then name then year
