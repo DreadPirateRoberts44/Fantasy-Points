@@ -1,0 +1,42 @@
+Description of what each column means practically speaking in the Original.xlsx
+Categorial columns have a C appended.
+The duplicate column names that are number should be revised.
+
+Year: the year the given row was recorded for.
+Player: the player the given row is recording. C
+Age: how old the player was that year.
+Hometown: town/city the player was born/raised. C
+Home State: state the player was born/raised. C
+Tm: abbreviation of the team the player played for that year. 2TM means they played on two teams that year. C
+G: games the player played in.
+GS: the number of games the player started in.
+Cmp: the number of passes completed. This measures thrown, so generally speaking zero for non QB, non zero for QB
+Att: the number of passes attempted following the description of the previous line.
+Yds: total yards throwing (see previous lines), sack yardage deduced here.
+TD: the number of touchdowns thrown (see previous lines if you find this ambiguous).
+Int: interceptions thrown. Annoying name for us on the dev side.
+Att1: rushing attempts.
+Yds2: rushing yards.
+Y/A: rushing yards per rush attempt.
+TD.2: rushing touchdowns.
+Rec: receptions.
+Y/R: yards per reception.
+TD.3: receiving touchdowns.
+FantPos: listed fantasy position, only includes QB, TE, WR, RB. C
+FantPt: how many fantasy points the player scored that year.
+Height (inches): player height.
+Weight: player weight (in pounds).
+College: where the player played in college. C
+Conference: conference of the college.
+College wins: number of wins in college.
+College losses: number of losses in college.
+DOB: player date of birth.
+Draft Round: the round the player was drafted in.
+Draft Year: year the player was drafted in.
+Wonderlic: score on the wonderlic exam.
+40 Yard: Combine data.
+Bench Press: Combine data.
+Vert Leap (in): Combine data.
+Broad Jump (in): Combine data.
+Shuttle: Combine data.
+3Cone: Combine data.

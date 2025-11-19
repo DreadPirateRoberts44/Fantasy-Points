@@ -69,7 +69,18 @@ def handlePostSeasonData(df):
      df["PreviousScore"] = 0
      df["PreviousPlayed"] = 0
      df["PreviousStarts"] = 0
-     identifyRookies(df)
+     df["PreviousThrownCmp"] = 0
+     df["PreviousThrownAtt"] = 0
+     df["PreviousYardsThrown"] = 0
+     df["PreviousTdsThrown"] = 0
+     df["PreviousIntThrown"] = 0
+     df["PreviousRushAtt"] = 0
+     df["PreviousRushYds"] = 0
+     df["PreviousRushTds"] = 0
+     df["PreviousRec"] = 0
+     df["PreviousYardsPerRec"] = 0
+     df["PreviousRecTds"] = 0
+     generateFeatureData(df)
 
      # TODO look to incorporate these into future stats
      df.drop(['G', 'GS', 'Cmp', 'Att', 'Yds', 'TD','Int','Att.1','Yds.1', 'Y/A', "TD.1", 'Rec', 'Yds.2', 'Y/R', 'TD.2'], axis=1, inplace=True) # We shouldn't explicitly need to drop these
@@ -111,16 +122,31 @@ def dropUnusedColumns(df):
 
 #TODO rename
 # determine modularization
-def identifyRookies(df):
+# currently all metrics are based off of just the most recent season per player, it could be tested using a more cumulative value.
+def generateFeatureData(df):
      i = 0
      players = {}
      for index, row in df.iterrows():
           if row["Player"] in players: 
-               df.at[index, "PreviousScore"]  = players[row["Player"]]["PreviousScore"] # currently just tracking one, could be more cumulative
-               df.at[index, "PreviousPlayed"]  = players[row["Player"]]["PreviousPlayed"] # currently just tracking one, could be more cumulative
-               df.at[index, "PreviousStarts"]  = players[row["Player"]]["PreviousStarts"] # currently just tracking one, could be more cumulative
+               df.at[index, "PreviousScore"]  = players[row["Player"]]["PreviousScore"]
+               df.at[index, "PreviousPlayed"]  = players[row["Player"]]["PreviousPlayed"]
+               df.at[index, "PreviousStarts"]  = players[row["Player"]]["PreviousStarts"]
                df.at[index, "PreviousSeasonsCount"] = players[row["Player"]]["PreviousSeasonsCount"]
                players[row["Player"]]["PreviousSeasonsCount"] += 1
+               
+               # yardage data:
+               df.at[index, "PreviousThrownCmp"] = players[row["Player"]]["PreviousThrownCmp"]
+               df.at[index, "PreviousThrownAtt"] = players[row["Player"]]["PreviousThrownAtt"] 
+               df.at[index, "PreviousYardsThrown"] = players[row["Player"]]["PreviousYardsThrown"] 
+               df.at[index, "PreviousTdsThrown"] = players[row["Player"]]["PreviousTdsThrown"] 
+               df.at[index, "PreviousIntThrown"] = players[row["Player"]]["PreviousIntThrown"]
+               df.at[index, "PreviousRushAtt"] = players[row["Player"]]["PreviousRushAtt"] 
+               df.at[index, "PreviousRushYds"] = players[row["Player"]]["PreviousRushYds"] 
+               df.at[index, "PreviousRushTds"] = players[row["Player"]]["PreviousRushTds"] 
+               df.at[index, "PreviousRec"] = players[row["Player"]]["PreviousRec"]
+               df.at[index, "PreviousYardsPerRec"] = players[row["Player"]]["PreviousYardsPerRec"]
+               df.at[index, "PreviousRecTds"] = players[row["Player"]]["PreviousRecTds"]
+
           else:
                players[row["Player"]] = {}
                players[row["Player"]]["PreviousSeasonsCount"] = 1
@@ -128,6 +154,17 @@ def identifyRookies(df):
           players[row["Player"]]["PreviousScore"] = row["FantPt"]
           players[row["Player"]]["PreviousPlayed"] = row["G"]
           players[row["Player"]]["PreviousStarts"] = row["GS"]
+          players[row["Player"]]["PreviousThrownCmp"] = row["Cmp"]
+          players[row["Player"]]["PreviousThrownAtt"] = row["Att"]
+          players[row["Player"]]["PreviousYardsThrown"] = row["Yds"]
+          players[row["Player"]]["PreviousTdsThrown"] = row["TD"]
+          players[row["Player"]]["PreviousIntThrown"] = row["Int"]
+          players[row["Player"]]["PreviousRushAtt"] = row["Att.1"]
+          players[row["Player"]]["PreviousRushYds"] = row["Yds.1"]
+          players[row["Player"]]["PreviousRushTds"] = row["TD.1"]
+          players[row["Player"]]["PreviousRec"] = row["Rec"]
+          players[row["Player"]]["PreviousYardsPerRec"] = row["Y/A"]
+          players[row["Player"]]["PreviousRecTds"] = row["TD.2"]
 
 
 # filename - name of the file to open
