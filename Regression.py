@@ -9,10 +9,12 @@ from Loader import getPlayerData
 
 
 
+# Determine if we're using the original file or a modified file
+choice = int(input("Choose mode:\n1. Use original file and don't update modified\n2. Use original file and update modified\n3. Use  modified\n"))
 
 # Get the file with the data
 file = filedialog.askopenfilename()
-df = getPlayerData(file)
+df = getPlayerData(file, choice)
 
 # TODO look to split data
 #dfs_by_category = {category: df_group for category, df_group in df.groupby("FantPos")}
