@@ -165,6 +165,37 @@ def generateFeatureData(df):
           players[row["Player"]]["PreviousRec"] = row["Rec"]
           players[row["Player"]]["PreviousYardsPerRec"] = row["Y/A"]
           players[row["Player"]]["PreviousRecTds"] = row["TD.2"]
+     compareToTeammates(df)
+
+# Generate feature data to measure how well the other players on their team have scored in the previous year by position
+# This provides both a sense of how good the team is, but also how much they might have to share with other players
+# TODO you could add more previous teammate metrics to this function. Not doing so for speed of testing/development for now, but should revisit if accuarcy needs improved
+def compareToTeammates(df):
+     total_FantPnt_By_Year_Team_Position = df.groupby(['Year', 'Tm','FantPos'])['PreviousScore'].sum().to_dict()
+     df["PreviousQBScore"] = 0
+     df["PreviousRBScore"] = 0
+     df["PreviousTEScore"] = 0
+     df["PreviousWRScore"] = 0
+     for index, row in df.iterrows():
+          # TODO hard confirm that the index I'm using matches the category. This likely should be safegauarded against by setting a rule for it
+          df["PreviousQBScore"] = total_FantPnt_By_Year_Team_Position.get((row["Year"], row["Tm"], 0), 0)
+          df["PreviousRBScore"] = total_FantPnt_By_Year_Team_Position.get((row["Year"], row["Tm"], 1), 0)
+          df["PreviousTEScore"] = total_FantPnt_By_Year_Team_Position.get((row["Year"], row["Tm"], 2), 0)
+          df["PreviousWRScore"] = total_FantPnt_By_Year_Team_Position.get((row["Year"], row["Tm"], 3), 0)
+
+
+# Return a subset of the data only including players of a given position type
+# This can be for accuarcy, performance, or creating useful groupings to cross reference
+def filterInclusive(df, column, value):
+
+     dfs_by_category = {category: df_group for category, df_group in df.groupby(column)}
+
+     return dfs_by_category[value]
+
+# Used to exclude rows if they have problematic data for training
+def filterExclusive(df, column, excludedValues):
+     filtered_df = df[~df[column].isin(excludedValues)]
+     return filtered_df
 
 
 # filename - name of the file to open
@@ -172,9 +203,13 @@ def generateFeatureData(df):
 def getPlayerData(filename, choice):
     if int(choice) < 3:
           df = pd.read_excel(filename, engine="openpyxl", sheet_name='1999-2013 data')
+
+          df = filterExclusive(df, "Tm", ["2TM", "3TM", "4TM"]) # exclude players who played on multiple teams in a season
+
           handleMissingData(df)
           df.sort_values(by=["Hometown", "Player", "Year"], inplace=True) # sort so missing/new player information can be generated   
           dropUnusedColumns(df)
+          #df = filterInclusive(df, "FantPos", 3) #TODO This could be a good place to filter to train only by positon, or in the calling code
           if choice == 2:
                df.to_excel("modified.xlsx",sheet_name='1999-2013 data')
     else:
