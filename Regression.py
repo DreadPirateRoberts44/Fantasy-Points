@@ -17,23 +17,20 @@ from Loader import getPlayerData
 file = filedialog.askopenfilename()
 df = getPlayerData(file, 1)
 
-# TODO look to split data
-dfs_by_category = {category: df_group for category, df_group in df.groupby("FantPos")}
-
-df = dfs_by_category[0]
-
-
 # TODO Clean data so it doesn't need the weird spacing substitute \xa0
 # TODO Clean data so the different yard types are named
 X = df[[
         "Age","Height (inches)", "Weight", 
         "College", "College wins", "College losses", 
         "Draft Round", "Draft Year", 
-        "40\xa0Yard", "Bench Press", "Vert Leap\xa0(in)", "Broad Jump\xa0(in)", "Shuttle", "3Cone",
+        "Bench Press", # strength
+        "Vert Leap\xa0(in)", "Broad Jump\xa0(in)", # jumps
+        "40\xa0Yard", "Shuttle", "3Cone", # speed/agility
         "PreviousSeasonsCount", "PreviousScore", "PreviousPlayed", "PreviousStarts",
         "PreviousThrownCmp", "PreviousThrownAtt", "PreviousYardsThrown", "PreviousTdsThrown", "PreviousIntThrown", # passing
         "PreviousRushAtt", "PreviousRushYds", "PreviousRushTds", # rushing
-        "PreviousRec", "PreviousYardsPerRec", "PreviousRecTds"# recieving
+        "PreviousRec", "PreviousYardsPerRec", "PreviousRecTds", # recieving
+        "PreviousQBScore", "PreviousRBScore", "PreviousTEScore", "PreviousWRScore" # teammate scores
         ]]
 
 Y = df["FantPt"]
